@@ -1,4 +1,6 @@
-# PICO-8 Language Server
+# PICO-8 Language Server (SEA version)
+
+This is a fork of the original [PICO-8 Language Server](https://github.com/japhib/pico8-ls) modified to use Node.js [SEA (Single Executable Applications)](https://nodejs.org/api/single-executable-applications.html) feature for use with Zed and other editors.
 
 [![VS Marketplace installs](https://badgen.net/vs-marketplace/i/PollywogGames.pico8-ls?label=VS%20Marketplace%20installs)](https://marketplace.visualstudio.com/items?itemName=PollywogGames.pico8-ls)
 [![VS Marketplace downloads](https://badgen.net/vs-marketplace/d/PollywogGames.pico8-ls?label=VS%20Marketplace%20downloads)](https://marketplace.visualstudio.com/items?itemName=PollywogGames.pico8-ls)
@@ -40,8 +42,11 @@ This extension uses the [Language Server Protocol](https://microsoft.github.io/l
 so while it's mainly made for VSCode, it could also be used for other editors
 such as NeoVim, Atom, etc.
 
-I don't have any experience setting up language extensions for platforms other than VSCode, so currently
-looking for help with that. See tips and support thread on the issue for various editors:
+### Node.js SEA Support
+
+This fork packages the language server as a [Node.js Single Executable Application (SEA)](https://nodejs.org/api/single-executable-applications.html), which bundles the JavaScript code and Node.js runtime into a single binary executable. This makes it easier to use the language server with editors like Zed and others that support running language servers as standalone executables without requiring a separate Node.js installation.
+
+For other editors, see tips and support thread on the issue for various editors:
 - [Neovim](https://github.com/japhib/pico8-ls/issues/34)
 - [Sublime Text](https://github.com/japhib/pico8-ls/issues/44)
 

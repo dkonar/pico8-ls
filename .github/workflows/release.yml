@@ -1,39 +1,50 @@
-name: Publish VSCode extension
+name: Build and Release PICO-8 Language Server
 
 on:
   push:
     branches: [release]
+  workflow_dispatch:
 
 jobs:
-  release-vs-marketplace:
-    runs-on: ubuntu-latest
-    environment: deploy-vsce-prod
+  build:
+    runs-on: macos-13
     steps:
-    - uses: actions/checkout@v2
-    - name: Install modules
-      run: npm install
-    - name: VSCE package and publish
-      env:
-        # see docs: https://code.visualstudio.com/api/working-with-extensions/continuous-integration#github-actions-automated-publishing
-        VSCE_PAT: ${{ secrets.VSCE_PAT }}
-      run: |
-        npx vsce package
-        npx vsce publish
-  
-  release-open-vsx:
-    # following pattern: https://github.com/open-vsx/publish-extensions/blob/master/docs/exampleCI.yaml
-    runs-on: ubuntu-latest
-    environment: deploy-vsce-prod
-    steps:
-    # Make sure we're using node 20+
-    - uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-    - uses: actions/checkout@v2
-    - name: Install modules
-      run: npm install
-    - name: OVSX package and publish
-      env:
-        OVSX_PAT: ${{ secrets.OVSX_PAT }}
-      run: |
-        npx ovsx publish --pat ${{ secrets.OVSX_PAT }}
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup NVM
+        run: |
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+      - name: Install Node.js 22
+        run: |
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          nvm install 22
+          nvm use 22
+          node --version
+          npm --version
+
+      - name: Install dependencies
+        run: |
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          nvm use 22
+          npm install
+          npm install -g postject@1.0.0-alpha.5
+
+      - name: Build SEA binary
+        run: |
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          nvm use 22
+          npm run build-sea
+
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pico8-ls-binary
+          path: build/pico8-ls
+          if-no-files-found: error
