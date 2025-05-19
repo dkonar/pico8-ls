@@ -2,7 +2,7 @@ name: Build and Release PICO-8 Language Server
 
 on:
   push:
-    branches: [release]
+    branches: [install]
   workflow_dispatch:
 
 jobs:
