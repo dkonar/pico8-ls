@@ -113,18 +113,18 @@
     ]
   },
   "scripts": {
-    "clean": "rm -rf client/out client/out-min server/out server/out-min server/dist sea-prep.blob build",
-    "clean-deps": "rm -rf node_modules client/node_modules server/node_modules && npm install",
+    "clean": "rm -rf server/out server/out-min server/dist build",
+    "clean-deps": "rm -rf node_modules server/node_modules && npm install",
     "compile-tsc": "node node_modules/typescript/bin/tsc -b",
     "compile": "npm run esbuild-server",
     "esbuild-server": "esbuild ./server/src/server.ts --bundle --outfile=./server/out-min/main.js --format=cjs --platform=node --minify",
     "compile-nomin": "npm run esbuild-client-nomin && npm run esbuild-server-nomin",
     "esbuild-client-nomin": "esbuild ./client/src/extension.ts --bundle --outfile=./client/out-min/main.js --external:vscode --format=cjs --platform=node",
     "esbuild-server-nomin": "esbuild ./server/src/server.ts --bundle --outfile=./server/out-min/main.js --format=cjs --platform=node",
-    "lint": "eslint ./client/src ./server/src --ext .ts",
-    "lint:fix": "eslint ./client/src ./server/src --ext .ts --fix",
+    "lint": "eslint ./server/src --ext .ts",
+    "lint:fix": "eslint ./server/src --ext .ts --fix",
     "postinstall": "cd ./server && npm install && cd ../",
-    "build-sea": "./scripts/optimized-sea-build.sh"
+    "build-sea": "./scripts/build-sea.sh"
   },
   "devDependencies": {
     "@types/mocha": "^8.2.2",

@@ -244,7 +244,7 @@ function findDefUsagesForProject(project: Project) {
       }, diagnosticsByURI);
 
   for (const uri in diagnosticsByURI) {
-    connection.sendDiagnostics({
+    void connection.sendDiagnostics({
       uri: uri,
       diagnostics: diagnosticsByURI[uri],
     });
@@ -486,7 +486,7 @@ function parseTextDocument(textDocument: TextDocument): ProjectDocument | undefi
 
     // send errors back to client immediately
     const diagnostics = errors.filter(e => inThisFile(textDocument.uri, e)).map(e => toDiagnostic(e));
-    connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
+    void connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
 
     return { textDocument, chunk, errors };
   } catch(e) {
