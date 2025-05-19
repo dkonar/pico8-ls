@@ -1,10 +1,10 @@
 import {
   CompletionItem, CompletionItemTag, createConnection, DefinitionParams, Diagnostic, DiagnosticSeverity,
   DidChangeConfigurationNotification, DocumentFormattingParams, DocumentSymbol, DocumentSymbolParams,
-  ExecuteCommandParams, HoverParams, InitializeParams, InitializeResult, Location, Position, ProposedFeatures,
-  Range, ReferenceParams, SignatureHelpParams, SignatureInformation, SymbolKind, TextDocumentPositionParams,
-  TextDocuments, TextDocumentSyncKind, TextEdit, WorkspaceFolder,
-} from 'vscode-languageserver';
+  ExecuteCommandParams, HoverParams, InitializeParams, InitializeResult,
+  Location, Position, Range, ReferenceParams, SignatureHelpParams, SignatureInformation,
+  SymbolKind, TextDocumentPositionParams, TextDocuments, TextDocumentSyncKind, TextEdit, WorkspaceFolder,
+} from 'vscode-languageserver/node';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import Parser from './parser/parser';
 import { Bounds, boundsToString } from './parser/types';
@@ -27,7 +27,7 @@ import * as path from 'path';
 
 console.log('PICO-8 Language Server starting.');
 
-const connection = createConnection(ProposedFeatures.all);
+const connection = createConnection();
 
 const documents = new TextDocuments(TextDocument);
 
