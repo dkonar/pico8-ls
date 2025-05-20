@@ -49,6 +49,8 @@ jobs:
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
           nvm use 22
           npm run build-sea
+          chmod +x build/pico8-ls
+          cd build && tar czf pico8-ls-linux-arm64.tar.gz pico8-ls
 
       - name: Get version
         id: get_version
@@ -68,4 +70,12 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            build/pico8-ls
+            build/pico8-ls-linux-arm64.tar.gz
+          body: |
+            PICO-8 Language Server binary for Linux ARM64
+            
+            ### Installation
+            1. Download and extract the archive:
+               ```bash
+               tar xzf pico8-ls-linux-arm64.tar.gz
+               ```
