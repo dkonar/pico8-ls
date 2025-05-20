@@ -2,12 +2,20 @@ name: Build and Release PICO-8 Language Server
 
 on:
   push:
-    branches: [install]
+    tags:
+      - "v*"
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Version number (e.g. v1.0.0)"
+        required: true
+        type: string
 
 jobs:
   build:
     runs-on: ubuntu-22.04-arm
+    permissions:
+      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -42,9 +50,22 @@ jobs:
           nvm use 22
           npm run build-sea
 
-      - name: Upload binary artifact
-        uses: actions/upload-artifact@v4
+      - name: Get version
+        id: get_version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
         with:
-          name: pico8-ls-binary
-          path: build/pico8-ls
-          if-no-files-found: error
+          tag_name: ${{ steps.get_version.outputs.version }}
+          name: Release ${{ steps.get_version.outputs.version }}
+          draft: false
+          prerelease: false
+          files: |
+            build/pico8-ls
