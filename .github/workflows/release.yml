@@ -50,7 +50,9 @@ jobs:
           nvm use 22
           npm run build-sea
           chmod +x build/pico8-ls
-          cd build && tar czf pico8-ls-linux-arm64.tar.gz pico8-ls
+          version="${{ steps.get_version.outputs.version }}"
+          version="${version#v}"  # Remove 'v' prefix if present
+          cd build && tar czf "pico8-ls-${version}-linux-arm64.tar.gz" pico8-ls
 
       - name: Get version
         id: get_version
@@ -70,12 +72,16 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            build/pico8-ls-linux-arm64.tar.gz
+            build/pico8-ls-${{ steps.get_version.outputs.version }}-linux-arm64.tar.gz
           body: |
             PICO-8 Language Server binary for Linux ARM64
             
             ### Installation
             1. Download and extract the archive:
                ```bash
-               tar xzf pico8-ls-linux-arm64.tar.gz
+               tar xzf pico8-ls-VERSION-linux-arm64.tar.gz
+               ```
+            2. Make the binary executable (if needed):
+               ```bash
+               chmod +x pico8-ls
                ```
