@@ -55,8 +55,7 @@ jobs:
           nvm use 22
           npm run build-sea
           chmod +x build/pico8-ls
-          version="${VERSION#v}"  # Remove 'v' prefix if present
-          cd build && tar czf "pico8-ls-${version}-linux-arm64.tar.gz" pico8-ls
+          cd build && tar czf "pico8-ls-${{ steps.get_version.outputs.version }}-linux-arm64.tar.gz" pico8-ls
           echo "Build directory contents:"
           ls -la
           cd ..
@@ -77,7 +76,7 @@ jobs:
             ### Installation
             1. Download and extract the archive:
                ```bash
-               tar xzf pico8-ls-VERSION-linux-arm64.tar.gz
+               tar xzf pico8-ls-{version}-linux-arm64.tar.gz
                ```
             2. Make the binary executable (if needed):
                ```bash
