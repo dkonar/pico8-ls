@@ -57,6 +57,9 @@ jobs:
           chmod +x build/pico8-ls
           version="${VERSION#v}"  # Remove 'v' prefix if present
           cd build && tar czf "pico8-ls-${version}-linux-arm64.tar.gz" pico8-ls
+          echo "Build directory contents:"
+          ls -la
+          cd ..
 
       - name: Create Release
         id: create_release
