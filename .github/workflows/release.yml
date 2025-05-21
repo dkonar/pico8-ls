@@ -52,13 +52,15 @@ jobs:
           fi
 
       - name: Build SEA binary
+        env:
+          VERSION: ${{ steps.get_version.outputs.version }}
         run: |
           export NVM_DIR="$HOME/.nvm"
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
           nvm use 22
           npm run build-sea
           chmod +x build/pico8-ls
-          version="${{ steps.get_version.outputs.version }}"
+          version="${VERSION}"
           version="${version#v}"  # Remove 'v' prefix if present
           cd build && tar czf "pico8-ls-${version}-linux-arm64.tar.gz" pico8-ls
 
