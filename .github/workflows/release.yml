@@ -44,12 +44,7 @@ jobs:
           npm install -g postject@1.0.0-alpha.5
       - name: Get version
         id: get_version
-        run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
-          else
-            echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
-          fi
+        uses: battila7/get-version-action@v2
 
       - name: Build SEA binary
         env:
@@ -60,8 +55,7 @@ jobs:
           nvm use 22
           npm run build-sea
           chmod +x build/pico8-ls
-          version="${VERSION}"
-          version="${version#v}"  # Remove 'v' prefix if present
+          version="${VERSION#v}"  # Remove 'v' prefix if present
           cd build && tar czf "pico8-ls-${version}-linux-arm64.tar.gz" pico8-ls
 
       - name: Create Release
